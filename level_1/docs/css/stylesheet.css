@@ -1,0 +1,12 @@
+body{
+    margin:0px;   
+    overflow: hidden;  
+}
+
+superman {
+    background: url("../img/Superman.png") no-repeat center top;
+}
+
+gravitybar{
+    background-color:red;
+}
