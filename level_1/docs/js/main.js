@@ -1,4 +1,38 @@
 "use strict";
+var Camera = (function () {
+    function Camera() {
+        this.elementpath = document.createElement("decor");
+        this.height = 100;
+        this.width = window.innerWidth * this.height;
+        this.positionx = 0;
+        this.positiony = 0;
+        this.translated = 0;
+        this.decor();
+    }
+    Camera.prototype.decor = function () {
+        var childElement = document.body;
+        var element = this.elementpath;
+        childElement.appendChild(element);
+        element.innerHTML = " ";
+        element.style.position = "absolute";
+        element.style.width = this.width + "px";
+        element.style.height = this.height + "%";
+        element.innerHTML = "";
+        element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)";
+    };
+    Camera.prototype.update = function (speed) {
+        var element = this.elementpath;
+        this.positionx -= speed;
+        this.translated += speed;
+        element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)";
+        if (window.innerWidth <= this.translated) {
+            this.width += window.innerWidth;
+            this.elementpath.style.width = this.width + "px";
+            this.translated = 0;
+        }
+    };
+    return Camera;
+}());
 var Ground = (function () {
     function Ground(width, positionX, positionY) {
         this.elementpath = document.createElement("gravitybar");
@@ -46,46 +80,51 @@ var Ground = (function () {
 }());
 var Game = (function () {
     function Game() {
-        this.width = 100;
-        this.height = 100;
-        this.Flyingman = new Superman();
-        this.Gravitybar = new Ground(100, 0, window.innerHeight);
+        this.camera = new Camera();
+        this.level = new Level();
         this.gameloop();
     }
-    Game.prototype.checkCollision = function (a, b) {
-        return (a.left <= b.right &&
-            b.left <= a.right &&
-            a.top <= b.bottom &&
-            b.top <= a.bottom);
-    };
-    Game.prototype.checkGravityCollision = function () {
-        var barhit;
-        var positioncharacter = this.Flyingman.getvalues();
-        var positionbar = this.Gravitybar.getvalues();
-        barhit = this.checkCollision(this.Gravitybar.getRectangle(), this.Flyingman.getRectangle());
-        if (barhit != true) {
-            this.Flyingman.gravity(0, 2);
-        }
-        if (barhit == true) {
-            alert("je bent dood gevallen");
-        }
-    };
     Game.prototype.gameloop = function () {
         var _this = this;
-        this.Flyingman.Update();
-        this.checkGravityCollision();
+        this.level.Flyingman.Update();
+        this.level.checkGravityCollision();
+        this.camera.update(0);
         requestAnimationFrame(function () { return _this.gameloop(); });
     };
     return Game;
 }());
 window.addEventListener("load", function () { return new Game; });
+var Level = (function () {
+    function Level() {
+        this.Flyingman = new Superman();
+        this.Gravitybar = new Ground(100, 0, window.innerHeight);
+    }
+    Level.prototype.checkCollision = function (a, b) {
+        return (a.left <= b.right &&
+            b.left <= a.right &&
+            a.top <= b.bottom &&
+            b.top <= a.bottom);
+    };
+    Level.prototype.checkGravityCollision = function () {
+        var barhit;
+        var positioncharacter = this.Flyingman.getvalues();
+        var positionbar = this.Gravitybar.getvalues();
+        barhit = this.checkCollision(this.Gravitybar.getRectangle(), this.Flyingman.getRectangle());
+        if (barhit != true) {
+            this.Flyingman.gravity(0, 3);
+        }
+        if (barhit == true) {
+        }
+    };
+    return Level;
+}());
 var Superman = (function () {
     function Superman() {
         var _this = this;
         this.elementpath = document.createElement("superman");
-        this.width = 400;
-        this.height = 250;
-        this.positionx = (window.innerWidth / 2) - (this.width / 2);
+        this.width = 200;
+        this.height = 125;
+        this.positionx = 100;
         this.positiony = (window.innerHeight / 2) - (this.height / 2);
         this.spacekeycode = 32;
         this.spacePress = 0;
@@ -131,6 +170,10 @@ var Superman = (function () {
             this.spacePress = 0;
         }
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)";
+        console.log(this.positiony);
+        if (this.positiony <= (0 - this.height)) {
+            alert("je bent dood gevallen");
+        }
     };
     Superman.prototype.getRectangle = function () {
         return this.elementpath.getBoundingClientRect();

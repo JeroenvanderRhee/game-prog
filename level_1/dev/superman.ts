@@ -9,9 +9,9 @@ class Superman{
 
     constructor(){
         //declareren van variabelen
-        this.width = 400
-        this.height = 250
-        this.positionx = (window.innerWidth / 2) - (this.width / 2)
+        this.width = 200
+        this.height = 125
+        this.positionx = 100
         this.positiony = (window.innerHeight / 2) - (this.height / 2)
 
         //toevoegen van eventlisteners voor de spatie
@@ -72,6 +72,10 @@ class Superman{
         }
 
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)"
+        console.log(this.positiony)
+        if(this.positiony <= (0 - this.height )){
+            alert("je bent dood gevallen")
+        }
     }
 
 
