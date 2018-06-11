@@ -1,0 +1,25 @@
+body{
+    margin:0px;   
+    overflow: hidden;  
+}
+
+superman {
+    background: url("../img/Superman.png") no-repeat center top;
+}
+
+gravitybar{
+    background-color:red;
+}
+
+#container{
+    background-color: #19c4ef;
+    background: url("../img/Background.png") center top;
+}
+
+tower{
+    background-color:gray;
+}
+
+/* startscherm{
+    background-color: #19c4ef;
+} */
