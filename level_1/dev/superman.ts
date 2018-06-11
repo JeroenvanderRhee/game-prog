@@ -71,11 +71,11 @@ class Superman{
             this.spacePress = 0
         }
 
-        element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)"
-        console.log(this.positiony)
-        if(this.positiony <= (0 - this.height )){
-            alert("je bent dood gevallen")
+        if(this.positiony <= (0 - (this.height / 2))){
+            this.positiony += this.height
         }
+
+        element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)"
     }
 
 

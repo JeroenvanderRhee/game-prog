@@ -11,9 +11,13 @@ gravitybar{
     background-color:red;
 }
 
-decor{
+#container{
     background-color: #19c4ef;
     background: url("../img/Background.png") center top;
+}
+
+tower{
+    background-color:gray;
 }
 
 /* startscherm{
