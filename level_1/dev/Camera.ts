@@ -9,7 +9,7 @@ class Camera{
     
     constructor(){
         this.height = 100
-        this.width = window.innerWidth * this.height
+        this.width = window.innerWidth * 5
         this.positionx = 0
         this.positiony = 0
         this.translatedtotal = 0

@@ -4,7 +4,8 @@ body{
 }
 
 superman {
-    background: url("../img/Superman.png") no-repeat center top;
+    background: url("../img/The_Flying_Man.png") no-repeat center top;
+    border:2px solid gray;
 }
 
 gravitybar{
@@ -12,13 +13,76 @@ gravitybar{
 }
 
 #container{
-    background-color: #19c4ef;
-    background: url("../img/Background.png") center top;
+    background: url("../img/Background.png");
 }
 
 tower{
-    background-color:gray;
+    /* background-color:gray; */
+    background: url("../img/Brick.png") center top;
 }
+
+startscherm{
+    display:inline-block;
+    position: absolute;
+    width:100%;
+    height:100%;
+    background: url("../img/Background.png") no-repeat center top;
+}
+
+startscherm > h1{
+    font-family: "Titillium Web";
+    font-weight: 700;
+    color:#ff5062;
+    font-size: 60px;
+    text-align: center;
+    vertical-align: middle;
+    margin:0px;
+    margin-top:calc(25% - 60px);
+}
+
+eindscherm{
+    display:inline-block;
+    position: absolute;
+    text-align: center;
+    width:100%;
+    height:100%;
+    background: url("../img/Background_gameover.png") no-repeat center bottom;
+}
+
+eindscherm > h1{
+    font-family: "Titillium Web";
+    font-weight: 700;
+    color:#ff5062;
+    font-size: 60px;
+    text-align: center;
+    vertical-align: middle;
+    margin:0px;
+    margin-top:calc(25% - 160px);
+}
+
+eindscherm > button{
+    font-family: "Titillium Web";
+    font-weight: 700;
+    color:white;
+    background-color:#ff5062;
+    font-size:30px;
+    text-align:  center;
+    border: 2px solid #ff5062;
+    border-radius:30px;
+    padding: 5px 80px;
+    margin-top:10px;
+}
+
+#scorefield{
+    position: absolute;
+    font-family: "Titillium Web";
+    font-weight: 700;
+    color:#ff5062;
+    font-size: 30px;
+    text-align: center;
+    margin:15px;
+}
+
 
 /* startscherm{
     background-color: #19c4ef;

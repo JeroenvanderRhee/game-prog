@@ -10,16 +10,23 @@ class Tower{
 
     constructor(numbertower:number){
         this.width = 100
-        this.height = this.getRandomNumber((window.innerHeight - 400))
+        this.height = this.getRandomNumber(window.innerHeight)
+        this.height -= 400
+        
+        //Controle of hij niet te laag is.
+        if(this.height <= 50){
+            this.height = 200
+        }
+
         this.gap = 250
         this.positionY = 0
         this.postitionX = numbertower * 800
         this.underTowerheight = ((window.innerHeight - this.height) - this.gap)
-        console.log(this.height)
+        //console.log(this.height)
 
         this.CreateTower()
         this.createUnderTower()
-    }
+        }
 
      //Aanmaak functie
      private CreateTower(){
@@ -65,29 +72,19 @@ class Tower{
         return Math.floor(Math.random() * Math.floor(max));
     }
 
-        //Geeft waardes terug voor de collision
-        public getRectangle() {
-            return this.elementpath.getBoundingClientRect()
-        }
-    
-        // geeft nog meer waardes terug voor de collision
-        public getvalues(){
-            let xbegin : number
-            let xeind : number
-            let y :number
-            let height:number
-            let width:number
-            let bar : HTMLElement
-            return {
-                element : this.elementpath,
-                xbegin : this.postitionX,
-                xeind : this.postitionX + this.width,
-                gapbegin : this.height,
-                gapeind: this.height + this.gap,
-                height : this.height,
-                width : this.width
-            }
-        }
+    //Geeft waardes terug voor de collision
+    public getRectangle() {
+        return this.elementpath.getBoundingClientRect() 
+    }
+
+    public getRectangleUnderTower(){
+        return this.elementpathUnderTower.getBoundingClientRect()
+    }
+
+    public positionx(){
+        let scorelijn:number = this.postitionX + this.width
+        return scorelijn
+    }
 }
 
 
