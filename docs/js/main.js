@@ -1,8 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var Camera = (function () {
     function Camera() {
         this.elementpath = document.createElement("div");
-        this.height = 100;
         this.width = window.innerWidth * 5;
         this.positionx = 0;
         this.positiony = 0;
@@ -17,7 +26,6 @@ var Camera = (function () {
         element.innerHTML = " ";
         element.style.position = "absolute";
         element.style.width = this.width + "px";
-        element.style.height = this.height + "%";
         element.innerHTML = "";
         element.id = "container";
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)";
@@ -39,16 +47,37 @@ var Camera = (function () {
     };
     return Camera;
 }());
-var Spel = (function () {
+var Score = (function () {
+    function Score() {
+        this.element = document.createElement("score");
+        this.textElement = document.createElement("h4");
+        this.points = 0;
+        this.createScoreField();
+    }
+    Score.prototype.createScoreField = function () {
+        var childelement = document.body;
+        childelement.appendChild(this.element);
+        this.element.appendChild(this.textElement);
+        this.textElement.id = "scorefield";
+    };
+    Score.prototype.update = function (score) {
+        this.points = score;
+        this.textElement.innerHTML = "Score: " + score;
+    };
+    return Score;
+}());
+var Spel = (function (_super) {
+    __extends(Spel, _super);
     function Spel(g) {
-        this.Tower = [];
-        this.Game = g;
-        this.camera = new Camera();
-        this.Flyingman = new Superman();
-        this.Gravitybar = new Ground(100, 0, window.innerHeight);
-        this.Score = new Score();
-        this.howMuchTowers = 0;
-        this.createTowers(2);
+        var _this = _super.call(this) || this;
+        _this.Tower = [];
+        _this.Game = g;
+        _this.camera = new Camera();
+        _this.Flyingman = new Superman();
+        _this.Gravitybar = new Ground(0, window.innerHeight);
+        _this.howMuchTowers = 0;
+        _this.createTowers(2);
+        return _this;
     }
     Spel.prototype.loop = function () {
         this.camera.update(2);
@@ -57,7 +86,6 @@ var Spel = (function () {
         this.checkGravityCollision();
         this.setScore();
         this.checkTowers();
-        console.log(this.Score);
     };
     Spel.prototype.createTowers = function (hoeveelheid) {
         for (var i = 1; i <= hoeveelheid; i++) {
@@ -72,12 +100,9 @@ var Spel = (function () {
             b.top <= a.bottom);
     };
     Spel.prototype.checkGravityCollision = function () {
-        var positionbar = this.Gravitybar.getvalues();
         var barhit = this.checkCollision(this.Gravitybar.getRectangle(), this.Flyingman.getRectangle());
         if (barhit != true) {
             this.Flyingman.gravity(0, 3);
-        }
-        if (barhit == true) {
         }
     };
     Spel.prototype.checkTowerCollision = function () {
@@ -91,7 +116,7 @@ var Spel = (function () {
             var barhitTopTower = _this.checkCollision(positionCharacter, positionTopTower);
             var barhitUnderTower = _this.checkCollision(positionCharacter, positionUnderTower);
             if ((barhitTopTower == true) || (barhitUnderTower == true)) {
-                _this.Game.endGame(_this.Score.points);
+                _this.Game.endGame(_this.points);
             }
         });
     };
@@ -106,18 +131,19 @@ var Spel = (function () {
                 score++;
             }
         });
-        this.Score.update(score);
+        this.update(score);
     };
     Spel.prototype.checkTowers = function () {
         var checkHowMuchTowers = this.howMuchTowers - 2;
-        if (this.Score.points >= checkHowMuchTowers) {
+        if (this.points >= checkHowMuchTowers) {
             this.createTowers(2);
         }
     };
     return Spel;
-}());
+}(Score));
 var EndScreen = (function () {
     function EndScreen(g, score) {
+        var _this = this;
         this.Score = score;
         var body = document.body;
         body.innerHTML = "";
@@ -126,11 +152,11 @@ var EndScreen = (function () {
         this.spacekeycode = 32;
         this.spacePress = 0;
         this.click = false;
-        window.addEventListener("click", this.checkClick);
+        window.addEventListener("click", function () { return _this.checkClick(); });
         this.create();
     }
     EndScreen.prototype.loop = function () {
-        console.log();
+        console.log(this.click);
         if (this.click == true) {
             this.Game.startNewGame();
         }
@@ -162,68 +188,23 @@ var EndScreen = (function () {
     return EndScreen;
 }());
 var Ground = (function () {
-    function Ground(width, positionX, positionY) {
+    function Ground(positionX, positionY) {
         this.elementpath = document.createElement("gravitybar");
-        this.width = width;
-        this.height = 2;
         this.positionx = positionX;
-        this.positiony = positionY - this.height;
+        this.positiony = positionY;
         this.Create();
     }
     Ground.prototype.Create = function () {
         var childElement = document.body;
         var element = this.elementpath;
         childElement.appendChild(element);
-        element.innerHTML = " ";
-        this.Opmaak();
-    };
-    Ground.prototype.Opmaak = function () {
-        var element = this.elementpath;
-        element.style.position = "absolute";
-        element.style.width = this.width + "%";
-        element.style.height = this.height + "px";
         element.innerHTML = "";
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)";
     };
     Ground.prototype.getRectangle = function () {
         return this.elementpath.getBoundingClientRect();
     };
-    Ground.prototype.getvalues = function () {
-        var xbegin;
-        var xeind;
-        var y;
-        var height;
-        var width;
-        var bar;
-        return {
-            element: this.elementpath,
-            xbegin: this.positionx,
-            xeind: this.positionx + this.width,
-            y: this.positiony,
-            height: this.height,
-            width: this.width
-        };
-    };
     return Ground;
-}());
-var Score = (function () {
-    function Score() {
-        this.element = document.createElement("score");
-        this.textElement = document.createElement("h4");
-        this.points = 0;
-        this.createScoreField();
-    }
-    Score.prototype.createScoreField = function () {
-        var childelement = document.body;
-        childelement.appendChild(this.element);
-        this.element.appendChild(this.textElement);
-        this.textElement.id = "scorefield";
-    };
-    Score.prototype.update = function (score) {
-        this.points = score;
-        this.textElement.innerHTML = "Score: " + score;
-    };
-    return Score;
 }());
 var Startscreen = (function () {
     function Startscreen(g) {
@@ -234,6 +215,7 @@ var Startscreen = (function () {
         this.spacePress = 0;
         window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
+        window.addEventListener("click", function () { return _this.checkClick(); });
         this.create();
     }
     Startscreen.prototype.loop = function () {
@@ -246,7 +228,7 @@ var Startscreen = (function () {
         childelement.appendChild(this.element);
         var textelement = document.createElement("h1");
         this.element.appendChild(textelement);
-        textelement.innerHTML = "Touch the spacebar to start the game!";
+        textelement.innerHTML = "Touch the spacebar or click somewhere to start the game!";
     };
     Startscreen.prototype.onKeyDown = function (e) {
         switch (e.keyCode) {
@@ -261,6 +243,9 @@ var Startscreen = (function () {
                 this.spacePress = 1;
                 break;
         }
+    };
+    Startscreen.prototype.checkClick = function () {
+        this.spacePress = 1;
     };
     return Startscreen;
 }());
@@ -285,12 +270,6 @@ var Tower = (function () {
         var childElement = document.getElementsByTagName("div")[0];
         var element = this.elementpath;
         childElement.appendChild(element);
-        element.innerHTML = " ";
-        this.OpmaakTower();
-    };
-    Tower.prototype.OpmaakTower = function () {
-        var element = this.elementpath;
-        element.style.position = "absolute";
         element.style.width = this.width + "px";
         element.style.height = this.height + "px";
         element.innerHTML = "";
@@ -301,14 +280,8 @@ var Tower = (function () {
         var element = this.elementpathUnderTower;
         childElement.appendChild(element);
         element.innerHTML = " ";
-        this.OpmaakUnderTower();
-    };
-    Tower.prototype.OpmaakUnderTower = function () {
-        var element = this.elementpathUnderTower;
-        element.style.position = "absolute";
         element.style.width = this.width + "px";
         element.style.height = this.underTowerheight + "px";
-        element.innerHTML = "";
         var yUnderTower = window.innerHeight - this.underTowerheight;
         element.style.transform = "translate(" + this.postitionX + "px," + yUnderTower + "px)";
     };
@@ -354,14 +327,13 @@ var Superman = (function () {
     function Superman() {
         var _this = this;
         this.elementpath = document.createElement("superman");
-        this.width = 82;
-        this.height = 125;
         this.positionx = 100;
-        this.positiony = (window.innerHeight / 2) - (this.height / 2);
+        this.positiony = (window.innerHeight / 2);
         this.spacekeycode = 32;
         this.spacePress = 0;
         window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
+        window.addEventListener("click", function () { return _this.checkClick(); });
         this.Create();
     }
     Superman.prototype.onKeyDown = function (e) {
@@ -378,19 +350,14 @@ var Superman = (function () {
                 break;
         }
     };
+    Superman.prototype.checkClick = function () {
+        this.spacePress = 1;
+    };
     Superman.prototype.Create = function () {
         var childElement = document.body;
         var element = this.elementpath;
         childElement.appendChild(element);
         element.innerHTML = " ";
-        this.Opmaak();
-    };
-    Superman.prototype.Opmaak = function () {
-        var element = this.elementpath;
-        element.style.position = "absolute";
-        element.style.width = this.width + "px";
-        element.style.height = this.height + "px";
-        element.innerHTML = "";
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)";
     };
     Superman.prototype.Update = function () {
@@ -399,8 +366,8 @@ var Superman = (function () {
             this.positiony -= 100;
             this.spacePress = 0;
         }
-        if (this.positiony <= (0 - (this.height / 2))) {
-            this.positiony += this.height;
+        if (this.positiony <= 0) {
+            this.positiony = 0;
         }
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)";
     };
@@ -415,9 +382,6 @@ var Superman = (function () {
     };
     Superman.prototype.positiex = function () {
         return this.positionx;
-    };
-    Superman.prototype.showHit = function () {
-        this.elementpath.style.backgroundColor = "red";
     };
     return Superman;
 }());

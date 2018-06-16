@@ -3,7 +3,6 @@ class Game{
 
     constructor(){
         this.Screen = new Startscreen(this)
-        // this.Screen = new EndScreen(this, 1)
         this.gameloop()
     }
 
@@ -13,13 +12,13 @@ class Game{
     }
 
     public startNewGame(){
-        let body = document.body
+        let body:HTMLElement = document.body
         body.innerHTML = ""
         this.Screen = new Spel(this)
     }
 
     public endGame(score:number){
-        let body = document.body
+        let body:HTMLElement = document.body
         body.innerHTML = ""
         this.Screen = new EndScreen(this, score)
     }

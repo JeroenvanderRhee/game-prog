@@ -9,15 +9,15 @@ class Score{
         this.createScoreField()
     }
 
-    private createScoreField(){
-        let childelement = document.body
+    private createScoreField():void{
+        let childelement:HTMLElement = document.body
         childelement.appendChild(this.element)
 
         this.element.appendChild(this.textElement)
         this.textElement.id = "scorefield"
     }
 
-    public update(score:number){
+    public update(score:number):void{
         this.points = score
         this.textElement.innerHTML = "Score: " + score
     }

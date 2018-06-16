@@ -1,25 +1,22 @@
 class Superman{
-    private width:number
     private positionx:number
     private positiony:number
     private spacekeycode:number
     private spacePress:number
     private elementpath:HTMLElement = document.createElement("superman")    
-    private height:number
 
 
     constructor(){
         //declareren van variabelen
-        this.width = 82
-        this.height = 125
         this.positionx = 100
-        this.positiony = (window.innerHeight / 2) - (this.height / 2)
+        this.positiony = (window.innerHeight / 2) //- (this.height / 2)
 
         //toevoegen van eventlisteners voor de spatie
         this.spacekeycode = 32 
         this.spacePress = 0
         window.addEventListener("keyup", (e: KeyboardEvent) => this.onKeyUp(e))
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
+        window.addEventListener("click", () => this.checkClick())
 
         //het poppetje aanmaken
         this.Create()
@@ -43,35 +40,30 @@ class Superman{
         }
     }
 
-     //Hier word superman aangemaakt
-     private Create(){
-        let childElement:HTMLElement = document.body
-        let element = this.elementpath
-        childElement.appendChild(element)
-        element.innerHTML = " "
-        this.Opmaak()
+    //Wanneer een toets weer omhoog is gekomen
+    private checkClick(): void {
+        this.spacePress = 1
     }
 
-    //Hier word superman opgemaakt
-    private Opmaak(){
-        let element = this.elementpath
-        element.style.position = "absolute"
-        element.style.width = this.width + "px"
-        element.style.height = this.height + "px"
-        element.innerHTML = ""
+     //Hier word superman aangemaakt
+     private Create():void{
+        let childElement:HTMLElement = document.body
+        let element:HTMLElement = this.elementpath
+        childElement.appendChild(element)
+        element.innerHTML = " "
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)"
     }
 
     //De vlieg functie. Plaatsen in de gameloop
-    public Update(){
-        let element = this.elementpath
+    public Update():void{
+        let element:HTMLElement = this.elementpath
         if(this.spacePress == 1){
             this.positiony -= 100;
             this.spacePress = 0
         }
 
-        if(this.positiony <= (0 - (this.height / 2))){
-            this.positiony += this.height
+        if(this.positiony <= 0){
+            this.positiony = 0
         }
 
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)"
@@ -84,8 +76,8 @@ class Superman{
     }
 
     // De zwaarte kracht
-    public gravity (strengthx:number, strengthy:number){
-        let element = this.elementpath
+    public gravity (strengthx:number, strengthy:number):void{
+        let element:HTMLElement = this.elementpath
         this.positiony += strengthy
         this.positionx += strengthx
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)"
@@ -93,9 +85,5 @@ class Superman{
 
     public positiex(){
         return this.positionx
-    }
-
-    public showHit(){
-        this.elementpath.style.backgroundColor = "red"
     }
 }

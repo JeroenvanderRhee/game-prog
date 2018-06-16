@@ -22,7 +22,6 @@ class Tower{
         this.positionY = 0
         this.postitionX = numbertower * 800
         this.underTowerheight = ((window.innerHeight - this.height) - this.gap)
-        //console.log(this.height)
 
         this.CreateTower()
         this.createUnderTower()
@@ -30,17 +29,9 @@ class Tower{
 
      //Aanmaak functie
      private CreateTower(){
-        let childElement = document.getElementsByTagName("div")[0]
-        let element = this.elementpath
+        let childElement:HTMLElement = document.getElementsByTagName("div")[0]
+        let element:HTMLElement = this.elementpath
         childElement.appendChild(element)
-        element.innerHTML = " "
-        this.OpmaakTower()
-    }
-
-    //Opmaak functie
-    private OpmaakTower(){
-        let element = this.elementpath
-        element.style.position = "absolute"
         element.style.width = this.width + "px"
         element.style.height = this.height + "px"
         element.innerHTML = ""
@@ -49,26 +40,18 @@ class Tower{
 
     //Create functie voor onder toren
     private createUnderTower(){
-        let childElement = document.getElementsByTagName("div")[0]
-        let element = this.elementpathUnderTower
+        let childElement:HTMLElement = document.getElementsByTagName("div")[0]
+        let element:HTMLElement = this.elementpathUnderTower
         childElement.appendChild(element)
         element.innerHTML = " "
-        this.OpmaakUnderTower()
-    }
-    
-    //Opmaak functie voor onder toren
-    private OpmaakUnderTower(){
-        let element = this.elementpathUnderTower
-        element.style.position = "absolute"
         element.style.width = this.width + "px"
         element.style.height = this.underTowerheight + "px"
-        element.innerHTML = ""
-        let yUnderTower = window.innerHeight - this.underTowerheight
+        let yUnderTower:number = window.innerHeight - this.underTowerheight
         element.style.transform = "translate(" + this.postitionX + "px," + yUnderTower + "px)"
     }
 
     //Create random integers
-    private getRandomNumber(max:number) {
+    private getRandomNumber(max:number){
         return Math.floor(Math.random() * Math.floor(max));
     }
 

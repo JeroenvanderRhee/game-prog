@@ -17,26 +17,26 @@ class EndScreen{
         this.spacekeycode = 32 
         this.spacePress = 0
         this.click = false
-        window.addEventListener("click",this.checkClick)
+        window.addEventListener("click", () => this.checkClick())
 
         this.create()
     }
 
-    public loop(){
-        console.log()
+    public loop():void{
+        console.log(this.click)
         if(this.click == true){
             this.Game.startNewGame()
         }
     }
 
-    private create(){
-        let childelement = document.body
+    private create():void{
+        let childelement:HTMLElement = document.body
         childelement.appendChild(this.element)
-        let textElement = document.createElement("h1")
-        let buttonElement = document.createElement("button")
+        let textElement:HTMLElement = document.createElement("h1")
+        let buttonElement:HTMLElement = document.createElement("button")
         this.element.appendChild(textElement)
         this.element.appendChild(buttonElement)
-        let opbouw = this.checkScore()
+        let opbouw:String = this.checkScore()
         textElement.innerHTML = "Game over...<br> You have earned " +opbouw + "."
         buttonElement.innerHTML = "Click here to start the game again."
     }
@@ -53,7 +53,7 @@ class EndScreen{
         return opbouw
     }
 
-    private checkClick(){
+    private checkClick():void{
         this.click = true
     }
 
