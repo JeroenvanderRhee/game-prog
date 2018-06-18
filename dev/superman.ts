@@ -48,7 +48,7 @@ class Superman{
      //Hier word superman aangemaakt
      private Create():void{
         let childElement:HTMLElement = document.body
-        let element:HTMLElement = this.elementpath
+        let element:HTMLElement  = this.elementpath
         childElement.appendChild(element)
         element.innerHTML = " "
         element.style.transform = "translate(" + this.positionx + "px," + this.positiony + "px)"

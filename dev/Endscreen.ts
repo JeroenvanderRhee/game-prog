@@ -1,30 +1,31 @@
+/// <reference path="../docs/js/music.js"/>
+
 class EndScreen{
     private element:HTMLElement
-    private spacekeycode:number
-    private spacePress:number
     private Game : Game
     private Score :number
+    private Highscore:any
     private click:boolean
 
-    constructor(g:Game, score:number){
+    constructor(g:Game, score:number, highscore:number){
         this.Score = score
+        this.Highscore = highscore
+
         let body = document.body
         body.innerHTML = ""
 
         this.Game = g
         this.element = document.createElement("eindscherm")
-        //toevoegen van eventlisteners voor de spatie
-        this.spacekeycode = 32 
-        this.spacePress = 0
         this.click = false
         window.addEventListener("click", () => this.checkClick())
-
         this.create()
+        localStorage.setItem('points', this.Highscore);
     }
 
     public loop():void{
-        console.log(this.click)
         if(this.click == true){
+            End.stop()
+            Background.play()
             this.Game.startNewGame()
         }
     }
@@ -56,5 +57,4 @@ class EndScreen{
     private checkClick():void{
         this.click = true
     }
-
 }

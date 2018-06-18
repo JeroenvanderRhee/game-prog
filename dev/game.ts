@@ -1,3 +1,5 @@
+/// <reference path="../docs/js/music.js"/>
+
 class Game{
     private Screen:any
 
@@ -14,13 +16,16 @@ class Game{
     public startNewGame(){
         let body:HTMLElement = document.body
         body.innerHTML = ""
+        Background.play()
         this.Screen = new Spel(this)
     }
 
-    public endGame(score:number){
+    public endGame(score:number, highscore:number){
+        Background.stop()
         let body:HTMLElement = document.body
         body.innerHTML = ""
-        this.Screen = new EndScreen(this, score)
+        End.play()
+        this.Screen = new EndScreen(this, score, highscore)
     }
 }
 window.addEventListener("load", () => new Game)

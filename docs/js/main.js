@@ -49,20 +49,37 @@ var Camera = (function () {
 }());
 var Score = (function () {
     function Score() {
+        this.highscore = 0;
         this.element = document.createElement("score");
         this.textElement = document.createElement("h4");
+        this.highScoreElement = document.createElement("h4");
         this.points = 0;
         this.createScoreField();
+        this.getHighscore();
     }
+    Score.prototype.getHighscore = function () {
+        if (localStorage.getItem("points")) {
+            this.highscore = localStorage.getItem("points");
+        }
+        console.log("highscore: " + this.highscore);
+    };
     Score.prototype.createScoreField = function () {
         var childelement = document.body;
         childelement.appendChild(this.element);
         this.element.appendChild(this.textElement);
-        this.textElement.id = "scorefield";
+        this.textElement.classList.add("scorefield");
+        this.textElement.id = "pointfield";
+        this.element.appendChild(this.highScoreElement);
+        this.highScoreElement.classList.add("scorefield");
+        this.highScoreElement.id = "highscorefield";
     };
     Score.prototype.update = function (score) {
         this.points = score;
         this.textElement.innerHTML = "Score: " + score;
+        if (this.points > this.highscore) {
+            this.highscore++;
+        }
+        this.highScoreElement.innerHTML = "Highscore: " + this.highscore;
     };
     return Score;
 }());
@@ -112,11 +129,10 @@ var Spel = (function (_super) {
             positionCharacter = _this.Flyingman.getRectangle();
             var positionTopTower = ReadOut.getRectangle();
             var positionUnderTower = ReadOut.getRectangleUnderTower();
-            var translate = _this.camera.getTranslate();
             var barhitTopTower = _this.checkCollision(positionCharacter, positionTopTower);
             var barhitUnderTower = _this.checkCollision(positionCharacter, positionUnderTower);
             if ((barhitTopTower == true) || (barhitUnderTower == true)) {
-                _this.Game.endGame(_this.points);
+                _this.Game.endGame(_this.points, _this.highscore);
             }
         });
     };
@@ -141,23 +157,32 @@ var Spel = (function (_super) {
     };
     return Spel;
 }(Score));
+var Background = new Howl({
+    src: ['./music/Background.mp3'],
+    loop: true
+});
+var End = new Howl({
+    src: ['./music/End.wav'],
+    loop: true
+});
 var EndScreen = (function () {
-    function EndScreen(g, score) {
+    function EndScreen(g, score, highscore) {
         var _this = this;
         this.Score = score;
+        this.Highscore = highscore;
         var body = document.body;
         body.innerHTML = "";
         this.Game = g;
         this.element = document.createElement("eindscherm");
-        this.spacekeycode = 32;
-        this.spacePress = 0;
         this.click = false;
         window.addEventListener("click", function () { return _this.checkClick(); });
         this.create();
+        localStorage.setItem('points', this.Highscore);
     }
     EndScreen.prototype.loop = function () {
-        console.log(this.click);
         if (this.click == true) {
+            End.stop();
+            Background.play();
             this.Game.startNewGame();
         }
     };
@@ -313,12 +338,15 @@ var Game = (function () {
     Game.prototype.startNewGame = function () {
         var body = document.body;
         body.innerHTML = "";
+        Background.play();
         this.Screen = new Spel(this);
     };
-    Game.prototype.endGame = function (score) {
+    Game.prototype.endGame = function (score, highscore) {
+        Background.stop();
         var body = document.body;
         body.innerHTML = "";
-        this.Screen = new EndScreen(this, score);
+        End.play();
+        this.Screen = new EndScreen(this, score, highscore);
     };
     return Game;
 }());

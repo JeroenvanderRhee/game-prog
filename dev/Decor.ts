@@ -7,6 +7,7 @@ class Spel extends Score{
     private Tower:Tower[] = []
     private howMuchTowers:number
     private Game:Game
+    public audio:any
     
     constructor(g:Game){
         super()
@@ -60,14 +61,11 @@ class Spel extends Score{
             positionCharacter = this.Flyingman.getRectangle()
             let positionTopTower:ClientRect = ReadOut.getRectangle()
             let positionUnderTower:ClientRect = ReadOut.getRectangleUnderTower()
-            let translate:number = this.camera.getTranslate()
             let barhitTopTower:boolean = this.checkCollision(positionCharacter, positionTopTower)
             let barhitUnderTower:boolean = this.checkCollision(positionCharacter, positionUnderTower)
     
             if((barhitTopTower == true) || (barhitUnderTower == true)){
-                //alert("Je bent tegen een paal aan gevlogen")
-                //console.log("Je raakt de paal")
-                this.Game.endGame(this.points)
+                this.Game.endGame(this.points, this.highscore)
             }
         })
     }
