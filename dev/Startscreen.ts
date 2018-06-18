@@ -1,5 +1,3 @@
-
-
 class Startscreen{
     private element:HTMLElement
     private spacekeycode:number

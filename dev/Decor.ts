@@ -7,7 +7,6 @@ class Spel extends Score{
     private Tower:Tower[] = []
     private howMuchTowers:number
     private Game:Game
-    public audio:any
     
     constructor(g:Game){
         super()
