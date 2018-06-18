@@ -150,6 +150,10 @@ class Spel extends Score{
     }
 ```
 
+### Klassendiagram:
+Hieronder kunt u mijn klassendiagram bekijken.
+![xml](https://user-images.githubusercontent.com/32259558/41554721-ff8ee0c6-7335-11e8-94a3-84a3dc71b00d.png)
+
 ### Link naar peerreview:
 Ik heb een peerreview gedaan bij Zoë. Deze kunt u hier bekijken. https://github.com/Sweetpurple616/PGRM04/issues/2
 
